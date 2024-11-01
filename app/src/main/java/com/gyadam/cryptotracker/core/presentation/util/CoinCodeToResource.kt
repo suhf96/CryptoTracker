@@ -1,4 +1,4 @@
-package com.gyadam.cryptotracker.utils
+package com.gyadam.cryptotracker.core.presentation.util
 
 import com.gyadam.cryptotracker.R
 
