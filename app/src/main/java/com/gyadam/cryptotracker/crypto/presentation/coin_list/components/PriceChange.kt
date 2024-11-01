@@ -29,7 +29,7 @@ fun PriceChange(
     modifier: Modifier = Modifier
 ) {
     val contentColor = if (change.value < 0.0) {
-        MaterialTheme.colorScheme.errorContainer
+        Color.White
     } else {
         Color.Green
     }
