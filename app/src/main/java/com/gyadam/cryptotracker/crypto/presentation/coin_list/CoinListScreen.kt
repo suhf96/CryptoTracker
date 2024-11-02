@@ -2,6 +2,7 @@ package com.gyadam.cryptotracker.crypto.presentation.coin_list
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,6 +38,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun CoinListScreen(
     state: CoinListState,
+    onEvent: (CoinListEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -50,7 +52,11 @@ fun CoinListScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(state.coins) { coinUi ->
-                CoinListItem(coinUi = coinUi, onClick = {}, modifier = Modifier.fillMaxWidth())
+                CoinListItem(
+                    coinUi = coinUi,
+                    onClick = { onEvent(CoinListEvent.OnCoinClick(coinUi)) },
+                    modifier = Modifier
+                        .fillMaxWidth())
                 HorizontalDivider()
             }
         }
@@ -64,6 +70,7 @@ private fun CoinListScreenPreview() {
     CryptoTrackerTheme {
         CoinListScreen(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
+            onEvent = {},
             state = CoinListState(isLoading = false, coins = (0..100).map { previewCoin })
         )
     }
