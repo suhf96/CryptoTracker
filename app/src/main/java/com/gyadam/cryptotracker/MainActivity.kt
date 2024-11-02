@@ -17,7 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyadam.cryptotracker.core.presentation.util.ObserveAsEvents
 import com.gyadam.cryptotracker.core.presentation.util.toString
+import com.gyadam.cryptotracker.crypto.presentation.coin_detail.CoinDetailScreen
 import com.gyadam.cryptotracker.crypto.presentation.coin_list.CoinListAction
+import com.gyadam.cryptotracker.crypto.presentation.coin_list.CoinListEvent
 import com.gyadam.cryptotracker.crypto.presentation.coin_list.CoinListScreen
 import com.gyadam.cryptotracker.crypto.presentation.coin_list.CoinListViewModel
 import com.gyadam.cryptotracker.ui.theme.CryptoTrackerTheme
@@ -43,7 +45,19 @@ class MainActivity : ComponentActivity() {
                             ).show()
                         }
                     }
-                    CoinListScreen(modifier = Modifier.padding(innerPadding), state = state)
+                    when {
+                        state.selectedCoin != null -> CoinDetailScreen(
+                            state = state,
+                            modifier = Modifier.padding(innerPadding)
+                        )
+
+                        else -> CoinListScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            onEvent = viewModel::onEvent,
+                            state = state
+                        )
+                    }
+
                 }
             }
         }

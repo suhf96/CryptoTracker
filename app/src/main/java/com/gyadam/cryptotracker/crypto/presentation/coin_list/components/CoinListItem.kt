@@ -45,7 +45,7 @@ fun CoinListItem(
     }
     Row(
         modifier = Modifier
-            .clickable { onClick }
+            .clickable { onClick() }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -97,7 +97,7 @@ internal val previewCoin = CoinUi(
     3,
     "Btc",
     "btc",
-    DisplayableNumber(2.0, "2.00"),
+    DisplayableNumber(2.0, "2134324234523452.00"),
     priceUsd = DisplayableNumber(3.0, "22345.00"),
     changePercent24Hr = DisplayableNumber(3.0, "33.00"),
     iconRes = R.drawable.btc
