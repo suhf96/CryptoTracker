@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.gyadam.cryptotracker.core.domain.util.onError
 import com.gyadam.cryptotracker.core.domain.util.onSuccess
 import com.gyadam.cryptotracker.crypto.domain.CoinDataSource
+import com.gyadam.cryptotracker.crypto.presentation.models.CoinUi
 import com.gyadam.cryptotracker.crypto.presentation.models.toCoinUi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,9 +17,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 
 class CoinListViewModel(
-    private val coinDataSource: CoinDataSource
+    private val coinDataSource: CoinDataSource,
 ) : ViewModel() {
 
     private val state = MutableStateFlow(CoinListState())
@@ -35,12 +37,31 @@ class CoinListViewModel(
     fun onEvent(event: CoinListEvent) {
         when (event) {
             is CoinListEvent.OnCoinClick -> {
-               state.update {
-                   it.copy(selectedCoin = event.coinUi)
-               }
+                selectCoin(event.coinUi)
             }
 
             CoinListEvent.OnRefresh -> loadCoins()
+        }
+    }
+
+    private fun selectCoin(coinUi: CoinUi) {
+        state.update {
+            it.copy(selectedCoin = coinUi)
+        }
+
+        viewModelScope.launch {
+            coinDataSource.getCoinHistory(
+                coinId = coinUi.id,
+                start = ZonedDateTime.now().minusDays(5),
+                end = ZonedDateTime.now()
+            ).onSuccess { history ->
+                println("Success : $history")
+            }.onError { error ->
+                state.update {
+                    it.copy(isLoading = false)
+                }
+                _events.send(CoinListAction.Error(error))
+            }
         }
     }
 
