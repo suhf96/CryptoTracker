@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.gyadam.cryptotracker.core.navigation.AdaptiveCoinListDetailPane
 import com.gyadam.cryptotracker.core.presentation.util.ObserveAsEvents
 import com.gyadam.cryptotracker.core.presentation.util.toString
 import com.gyadam.cryptotracker.crypto.presentation.coin_detail.CoinDetailScreen
@@ -32,32 +33,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             CryptoTrackerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val viewModel = koinViewModel<CoinListViewModel>()
-                    val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-                    val context = LocalContext.current
-                    ObserveAsEvents(events = viewModel.events) { event ->
-                        when (event) {
-                            is CoinListAction.Error -> Toast.makeText(
-                                context,
-                                event.error.toString(context),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                    when {
-                        state.selectedCoin != null -> CoinDetailScreen(
-                            state = state,
-                            modifier = Modifier.padding(innerPadding)
-                        )
-
-                        else -> CoinListScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            onEvent = viewModel::onEvent,
-                            state = state
-                        )
-                    }
-
+                    AdaptiveCoinListDetailPane(
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }

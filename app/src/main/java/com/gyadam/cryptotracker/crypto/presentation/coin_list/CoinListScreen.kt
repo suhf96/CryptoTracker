@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gyadam.cryptotracker.R
 import com.gyadam.cryptotracker.core.presentation.util.toString
 import com.gyadam.cryptotracker.crypto.presentation.coin_list.components.CoinListItem
@@ -38,7 +39,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun CoinListScreen(
     state: CoinListState,
-    onEvent: (CoinListEvent) -> Unit,
+    onAction: (CoinListAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -54,9 +55,10 @@ fun CoinListScreen(
             items(state.coins) { coinUi ->
                 CoinListItem(
                     coinUi = coinUi,
-                    onClick = { onEvent(CoinListEvent.OnCoinClick(coinUi)) },
+                    onClick = { onAction(CoinListAction.OnCoinClick(coinUi)) },
                     modifier = Modifier
-                        .fillMaxWidth())
+                        .fillMaxWidth()
+                )
                 HorizontalDivider()
             }
         }
@@ -70,7 +72,7 @@ private fun CoinListScreenPreview() {
     CryptoTrackerTheme {
         CoinListScreen(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
-            onEvent = {},
+            onAction = {},
             state = CoinListState(isLoading = false, coins = (0..100).map { previewCoin })
         )
     }
