@@ -3,6 +3,7 @@ package com.gyadam.cryptotracker.crypto.presentation.models
 import androidx.annotation.DrawableRes
 import com.gyadam.cryptotracker.core.presentation.util.getDrawableIdForCoin
 import com.gyadam.cryptotracker.crypto.domain.Coin
+import com.gyadam.cryptotracker.crypto.presentation.coin_detail.DataPoint
 import com.gyadam.cryptotracker.crypto.presentation.coin_list.components.toDisplayableNumber
 
 data class CoinUi(
@@ -13,6 +14,7 @@ data class CoinUi(
     val marketCapUsd: DisplayableNumber,
     val priceUsd: DisplayableNumber,
     val changePercent24Hr: DisplayableNumber,
+    val coinPriceHistory: List<DataPoint> = emptyList(),
     @DrawableRes val iconRes: Int
 )
 
