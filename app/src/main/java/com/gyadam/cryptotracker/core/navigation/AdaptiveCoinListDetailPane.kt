@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
+
 package com.gyadam.cryptotracker.core.navigation
 
 import android.widget.Toast
@@ -11,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gyadam.cryptotracker.core.presentation.util.ObserveAsEvents
 import com.gyadam.cryptotracker.core.presentation.util.toString
 import com.gyadam.cryptotracker.crypto.presentation.coin_detail.CoinDetailScreen
@@ -19,55 +20,53 @@ import com.gyadam.cryptotracker.crypto.presentation.coin_list.CoinListAction
 import com.gyadam.cryptotracker.crypto.presentation.coin_list.CoinListEvent
 import com.gyadam.cryptotracker.crypto.presentation.coin_list.CoinListScreen
 import com.gyadam.cryptotracker.crypto.presentation.coin_list.CoinListViewModel
+import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+
 @Composable
 fun AdaptiveCoinListDetailPane(
-    coinListViewModel: CoinListViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CoinListViewModel = koinViewModel()
 ) {
-    val state by coinListViewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    ObserveAsEvents(events = coinListViewModel.events) { event ->
-        when (event) {
-            is CoinListAction.Error -> Toast.makeText(
-                context,
-                event.error.toString(context),
-                Toast.LENGTH_LONG
-            ).show()
+    ObserveAsEvents(events = viewModel.events) { event ->
+        when(event) {
+            is CoinListEvent.Error -> {
+                Toast.makeText(
+                    context,
+                    event.error.toString(context),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
+
     val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
     NavigableListDetailPaneScaffold(
         navigator = navigator,
         listPane = {
             AnimatedPane {
                 CoinListScreen(
-                    modifier = modifier,
-                    onEvent = { event ->
-                        coinListViewModel.onEvent(event)
-                        when (event) {
-                            is CoinListEvent.OnCoinClick -> {
+                    state = state,
+                    onAction = { action ->
+                        viewModel.onAction(action)
+                        when(action) {
+                            is CoinListAction.OnCoinClick -> {
                                 navigator.navigateTo(
                                     pane = ListDetailPaneScaffoldRole.Detail
                                 )
                             }
-
-                            CoinListEvent.OnRefresh -> TODO()
                         }
-                    },
-                    state = state
+                    }
                 )
             }
-
         },
         detailPane = {
             AnimatedPane {
-                CoinDetailScreen(
-                    modifier = modifier,
-                    state = state
-                )
+                CoinDetailScreen(state = state)
             }
-        }
+        },
+        modifier = modifier
     )
 }

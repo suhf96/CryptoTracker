@@ -33,9 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CryptoTrackerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val viewModel = koinViewModel<CoinListViewModel>()
                     AdaptiveCoinListDetailPane(
-                        coinListViewModel = viewModel,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

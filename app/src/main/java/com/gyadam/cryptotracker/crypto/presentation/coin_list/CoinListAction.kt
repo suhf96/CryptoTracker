@@ -1,7 +1,8 @@
 package com.gyadam.cryptotracker.crypto.presentation.coin_list
 
-import com.gyadam.cryptotracker.core.domain.util.NetworkError
+import com.gyadam.cryptotracker.crypto.presentation.models.CoinUi
+
 
 sealed interface CoinListAction {
-    data class Error(val error: NetworkError) : CoinListAction
+    data class OnCoinClick(val coinUi: CoinUi): CoinListAction
 }
