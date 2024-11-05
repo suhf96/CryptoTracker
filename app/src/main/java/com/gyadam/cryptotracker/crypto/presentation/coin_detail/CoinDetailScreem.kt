@@ -65,6 +65,7 @@ fun CoinDetailScreen(
         val coin = state.selectedCoin
         Column(
             modifier = modifier
+                .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
@@ -134,7 +135,7 @@ fun CoinDetailScreen(
                 var totalChartWidth by remember {
                     mutableFloatStateOf(0f)
                 }
-                val amountOfVisibleDataPoints = if(labelWidth > 0) {
+                val amountOfVisibleDataPoints = if (labelWidth > 0) {
                     ((totalChartWidth - 2.5 * labelWidth) / labelWidth).toInt()
                 } else {
                     0

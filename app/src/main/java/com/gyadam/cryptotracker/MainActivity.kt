@@ -32,11 +32,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CryptoTrackerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
                     AdaptiveCoinListDetailPane(
-                        modifier = Modifier.padding(innerPadding)
                     )
-                }
             }
         }
     }

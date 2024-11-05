@@ -11,20 +11,20 @@ import com.gyadam.cryptotracker.R
 
 val SpaceMono = FontFamily(
     Font(
-        resId = R.font.space_mono_regular,
+        resId = R.font.font,
         weight = FontWeight.Normal
     ),
     Font(
-        resId = R.font.space_mono_italic,
+        resId = R.font.montserrat,
         weight = FontWeight.Normal,
         style = FontStyle.Italic
     ),
     Font(
-        resId = R.font.space_mono_bold,
+        resId = R.font.poppins,
         weight = FontWeight.Bold
     ),
     Font(
-        resId = R.font.space_mono_bold_italic,
+        resId = R.font.poppins,
         weight = FontWeight.Bold,
         style = FontStyle.Italic
     ),
