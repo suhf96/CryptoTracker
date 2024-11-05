@@ -9,4 +9,8 @@
     <string name="market_cap">Market Cap</string>
     <string name="price">Price</string>
     <string name="change_last_24hr">Change last 24 Hours</string>
+    <string name="crypto_tracker_title">Crypto\nTracker</string>
+    <string name="all_cryptocurrencies">Crypto list</string>
+    <string name="your_watchlist">Your watchlist</string>
+    <string name="new_chip_text">New</string>
 </resources>
